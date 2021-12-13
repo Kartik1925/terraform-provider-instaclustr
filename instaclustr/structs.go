@@ -163,6 +163,14 @@ type CreateVPCPeeringRequest struct {
 	PeerRegion    string        `json:"peerRegion,omitempty"`
 }
 
+type CreateGCPVPCPeeringRequest struct {
+	Name               string        `json:"name"`
+	PeerProjectID      string        `json:"peerProjectId"`
+	PeerVPCNetworkName string        `json:"peerVpcNetworkName"`
+	PeerSubnets        []interface{} `json:"peerSubnets"`
+	//PeerRegion         string        `json:"peerRegion,omitempty"`
+}
+
 type VPCPeering struct {
 	ID                 string        `json:"id"`
 	AWSVpcConnectionID string        `json:"aws_vpc_connection_id"`
@@ -174,6 +182,20 @@ type VPCPeering struct {
 	PeerSubnets        []interface{} `json:"peerSubnets"`
 	StatusCode         string        `json:"statusCode"`
 	PeerRegion         string        `json:"peerRegion"`
+}
+
+type GCPVPCPeering struct {
+	ID                 string `json:"id"`
+	Name               string `json:"name"`
+	GCPVpcConnectionID string `json:"peerProjectId"`
+	ClusterDataCentre  string `json:"clusterDataCentre"`
+	VpcID              string `json:"vpcNetworkName"`
+	PeerProjectID      string `json:"projectId"`
+	PeerVPCNetworkName string `json:"peerVpcNetworkName"`
+	//PeerSubnet         string        `json:"peerSubnet"`
+	PeerSubnets []interface{} `json:"peerSubnets"`
+	StatusCode  string        `json:"statusCode"`
+	//PeerRegion         string        `json:"peerRegion"`
 }
 
 type ResizeClusterRequest struct {

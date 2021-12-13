@@ -35,8 +35,21 @@ func TestAccVpcPeeringResource(t *testing.T) {
 	})
 }
 
+// func checkVpcPeeringState(s *terraform.State) error {
+// 	resourceState := s.Modules[0].Resources["instaclustr_vpc_peering.valid_with_vpc_peering"]
+// 	if resourceState == nil {
+// 		return fmt.Errorf("valid: resource not found in state")
+// 	}
+
+// 	instanceState := resourceState.Primary
+// 	if instanceState == nil {
+// 		return fmt.Errorf("resource has no primary instance")
+// 	}
+// 	return nil
+// }
+
 func checkVpcPeeringState(s *terraform.State) error {
-	resourceState := s.Modules[0].Resources["instaclustr_vpc_peering.valid_with_vpc_peering"]
+	resourceState := s.Modules[0].Resources["instaclustr_GCPvpc_peering.valid_with_GCPvpc_peering"]
 	if resourceState == nil {
 		return fmt.Errorf("valid: resource not found in state")
 	}
@@ -48,16 +61,36 @@ func checkVpcPeeringState(s *terraform.State) error {
 	return nil
 }
 
+// func checkVpcPeeringCreated(hostname, username, apiKey string) resource.TestCheckFunc {
+// 	return func(s *terraform.State) error {
+// 		resourceState := s.Modules[0].Resources["instaclustr_vpc_peering.valid_with_vpc_peering"]
+
+// 		client := new(instaclustr.APIClient)
+// 		client.InitClient(hostname, username, apiKey)
+// 		cdcID := resourceState.Primary.Attributes["cdc_id"]
+// 		vpcPeeringID := resourceState.Primary.Attributes["vpc_peering_id"]
+
+//		vpcPeering, err := client.ReadVpcPeering(cdcID, vpcPeeringID)
+// 		if err != nil {
+// 			return fmt.Errorf("Failed to read VPC peering %s: %s", vpcPeeringID, err)
+// 		}
+// 		if vpcPeering.ID != vpcPeeringID {
+// 			return fmt.Errorf("VPC peering connection expected %s but got %s", vpcPeeringID, vpcPeering.ID)
+// 		}
+// 		return nil
+// 	}
+// }
+
 func checkVpcPeeringCreated(hostname, username, apiKey string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		resourceState := s.Modules[0].Resources["instaclustr_vpc_peering.valid_with_vpc_peering"]
+		resourceState := s.Modules[0].Resources["instaclustr_GCPvpc_peering.valid_with_GCPvpc_peering"]
 
 		client := new(instaclustr.APIClient)
 		client.InitClient(hostname, username, apiKey)
 		cdcID := resourceState.Primary.Attributes["cdc_id"]
 		vpcPeeringID := resourceState.Primary.Attributes["vpc_peering_id"]
 
-		vpcPeering, err := client.ReadVpcPeering(cdcID, vpcPeeringID)
+		vpcPeering, err := client.GCPReadVpcPeering(cdcID, vpcPeeringID)
 		if err != nil {
 			return fmt.Errorf("Failed to read VPC peering %s: %s", vpcPeeringID, err)
 		}
@@ -70,7 +103,7 @@ func checkVpcPeeringCreated(hostname, username, apiKey string) resource.TestChec
 
 func checkVpcPeeringDeleted(hostname, username, apiKey string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		resourceState := s.Modules[0].Resources["instaclustr_vpc_peering.valid_with_vpc_peering"]
+		resourceState := s.Modules[0].Resources["instaclustr_GCPvpc_peering.valid_with_GCPvpc_peering"]
 		cdcID := resourceState.Primary.Attributes["cdc_id"]
 		vpcPeeringID := resourceState.Primary.Attributes["vpc_peering_id"]
 
@@ -83,3 +116,19 @@ func checkVpcPeeringDeleted(hostname, username, apiKey string) resource.TestChec
 		return nil
 	}
 }
+
+// func checkVpcPeeringDeleted(hostname, username, apiKey string) resource.TestCheckFunc {
+// 	return func(s *terraform.State) error {
+// 		resourceState := s.Modules[0].Resources["instaclustr_vpc_peering.valid_with_vpc_peering"]
+// 		cdcID := resourceState.Primary.Attributes["cdc_id"]
+// 		vpcPeeringID := resourceState.Primary.Attributes["vpc_peering_id"]
+
+// 		client := new(instaclustr.APIClient)
+// 		client.InitClient(hostname, username, apiKey)
+// 		err := client.DeleteVpcPeering(cdcID, vpcPeeringID)
+// 		if err == nil {
+// 			return fmt.Errorf("VPC peering connection %s still exists", vpcPeeringID)
+// 		}
+// 		return nil
+// 	}
+// }
